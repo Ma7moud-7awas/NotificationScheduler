@@ -1,0 +1,10 @@
+- [x] Add Retrofit and XML converter dependencies
+    - [x] Update `libs.versions.toml`
+    - [x] Update `app/build.gradle.kts`
+- [x] Add Internet permission to `AndroidManifest.xml`
+- [x] Update `Notification` data model with XML annotations
+- [x] Create `NotificationResponse` XML wrapper
+- [x] Create `NotificationService` interface
+- [x] Create `NetworkModule` for Hilt
+- [x] Update `RemoteDataSourceImpl` to use Retrofit
+- [x] Verify build and functionality

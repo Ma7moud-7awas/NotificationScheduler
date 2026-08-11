@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Notification Scheduler</string>
+    <string name="cancel_all">Cancel All</string>
+    <string name="schedule_this_notification">Schedule this notification</string>
+    <string name="scheduling_success_title">Success</string>
+    <string name="scheduling_success_message">Notification scheduled for %1$d seconds</string>
+    <string name="ok">OK</string>
+</resources>
