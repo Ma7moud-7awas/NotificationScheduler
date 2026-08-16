@@ -17,8 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.work.WorkInfo
 import com.example.notificationscheduler.R
-import com.example.notificationscheduler.core.BaseActivity
-import com.example.notificationscheduler.core.model.Notification
+import com.example.notificationscheduler.core.data.model.Notification
+import com.example.notificationscheduler.core.presentation.BaseActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job

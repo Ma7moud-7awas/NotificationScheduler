@@ -1,4 +1,4 @@
-package com.example.notificationscheduler.core
+package com.example.notificationscheduler.core.presentation
 
 import android.os.Bundle
 import android.widget.Toast
@@ -7,7 +7,7 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.notificationscheduler.core.model.UiState
+import com.example.notificationscheduler.core.presentation.model.UiState
 
 abstract class BaseActivity : AppCompatActivity() {
 

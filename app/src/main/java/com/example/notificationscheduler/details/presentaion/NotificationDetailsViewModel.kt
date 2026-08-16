@@ -2,7 +2,7 @@ package com.example.notificationscheduler.details.presentaion
 
 import androidx.lifecycle.ViewModel
 import androidx.work.*
-import com.example.notificationscheduler.core.model.Notification
+import com.example.notificationscheduler.core.data.model.Notification
 import com.example.notificationscheduler.details.worker.NotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

@@ -1,4 +1,4 @@
-package com.example.notificationscheduler.core.model
+package com.example.notificationscheduler.core.presentation.model
 
 sealed interface UiState<out T> {
 

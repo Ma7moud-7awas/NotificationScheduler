@@ -1,6 +1,6 @@
-package com.example.notificationscheduler.list.data.model
+package com.example.notificationscheduler.list.data.remote.model
 
-import com.example.notificationscheduler.core.model.Notification
+import com.example.notificationscheduler.core.data.model.Notification
 import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.Path
 import com.tickaroo.tikxml.annotation.Xml

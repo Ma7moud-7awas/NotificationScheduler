@@ -14,8 +14,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notificationscheduler.R
-import com.example.notificationscheduler.core.BaseActivity
-import com.example.notificationscheduler.core.model.UiState
+import com.example.notificationscheduler.core.presentation.BaseActivity
+import com.example.notificationscheduler.core.presentation.model.UiState
 import com.example.notificationscheduler.details.presentaion.NotificationDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -39,6 +39,11 @@ class NotificationListActivity : BaseActivity() {
         findGlobalViews()
         setupRecyclerView()
         observeUiState()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.fetchNotifications()
     }
 
     fun findGlobalViews() {

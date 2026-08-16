@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import com.example.notificationscheduler.core.model.Notification
+import com.example.notificationscheduler.core.data.model.Notification
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

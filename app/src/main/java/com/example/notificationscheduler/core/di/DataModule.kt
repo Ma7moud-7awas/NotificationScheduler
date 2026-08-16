@@ -1,7 +1,7 @@
 package com.example.notificationscheduler.core.di
 
-import com.example.notificationscheduler.list.data.remote.RemoteDataSource
-import com.example.notificationscheduler.list.data.remote.RemoteDataSourceImpl
+import com.example.notificationscheduler.list.data.repository.NotificationRepositoryImpl
+import com.example.notificationscheduler.list.domain.NotificationRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,7 +14,7 @@ abstract class DataModule {
 
     @Binds
     @Singleton
-    abstract fun bindRemoteDataSource(
-        remoteDataSourceImpl: RemoteDataSourceImpl
-    ): RemoteDataSource
+    abstract fun bindNotificationRepository(
+        notificationRepositoryImpl: NotificationRepositoryImpl
+    ): NotificationRepository
 }

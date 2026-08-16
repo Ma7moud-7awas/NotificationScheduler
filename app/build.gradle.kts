@@ -39,6 +39,11 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.work.runtime.ktx)
 
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notificationscheduler.R
-import com.example.notificationscheduler.core.model.Notification
+import com.example.notificationscheduler.core.data.model.Notification
 
 class NotificationAdapter(
     private var notifications: List<Notification>,
