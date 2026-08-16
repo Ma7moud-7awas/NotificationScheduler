@@ -7,5 +7,11 @@ interface NotificationRepository {
 
     fun getNotifications(): Flow<List<Notification>>
 
+    fun getNotificationById(id: Int): Flow<Notification?>
+
+    suspend fun getAllScheduledNotifications(): List<Notification>
+
     suspend fun refreshNotifications()
+
+    suspend fun updateScheduledState(id: Int, isScheduled: Boolean)
 }

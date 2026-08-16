@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class NotificationListActivity : BaseActivity() {
 
-    private val viewModel: NotificationViewModel by viewModels()
+    private val viewModel: NotificationListViewModel by viewModels()
     private lateinit var adapter: NotificationAdapter
     private lateinit var pbLoading: ProgressBar
 
@@ -43,7 +43,7 @@ class NotificationListActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.fetchNotifications()
+        viewModel.refreshNotifications()
     }
 
     fun findGlobalViews() {
@@ -100,7 +100,7 @@ class NotificationListActivity : BaseActivity() {
         return when (item.itemId) {
             R.id.action_cancel_all -> {
                 viewModel.cancelAllNotifications()
-                displayMessage("All notifications cancelled")
+                displayMessage(getString(R.string.all_notifications_cancelled))
                 true
             }
 

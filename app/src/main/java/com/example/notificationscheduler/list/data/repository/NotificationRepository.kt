@@ -18,11 +18,26 @@ class NotificationRepositoryImpl @Inject constructor(
         return localDS.getAllNotifications()
     }
 
+    override fun getNotificationById(id: Int): Flow<Notification?> {
+        return localDS.getNotificationById(id)
+    }
+
+    override suspend fun getAllScheduledNotifications(): List<Notification> {
+        return localDS.getAllScheduledNotifications()
+    }
+
     override suspend fun refreshNotifications() {
         val remoteNotifications = remoteDS.fetchNotifications()
 
-        if (remoteNotifications.isNotEmpty()) {
-            localDS.updateNotifications(remoteNotifications)
+        val scheduledIds = localDS.getAllScheduledNotifications().map { it.id }.toSet()
+        val updatedNotifications = remoteNotifications.map {
+            it.copy(isScheduled = scheduledIds.contains(it.id))
         }
+
+        localDS.updateNotifications(updatedNotifications)
+    }
+
+    override suspend fun updateScheduledState(id: Int, isScheduled: Boolean) {
+        localDS.updateScheduledState(id, isScheduled)
     }
 }

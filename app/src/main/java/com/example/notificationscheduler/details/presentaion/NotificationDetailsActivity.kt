@@ -1,9 +1,12 @@
 package com.example.notificationscheduler.details.presentaion
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -15,7 +18,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.work.WorkInfo
 import com.example.notificationscheduler.R
 import com.example.notificationscheduler.core.data.model.Notification
 import com.example.notificationscheduler.core.presentation.BaseActivity
@@ -39,7 +41,7 @@ class NotificationDetailsActivity : BaseActivity() {
                 showScheduleConfirmationDialog(it)
             }
         } else {
-            displayMessage("Notification permission denied")
+            displayMessage(getString(R.string.notification_permission_denied))
         }
     }
 
@@ -80,8 +82,8 @@ class NotificationDetailsActivity : BaseActivity() {
         btnSchedule: Button
     ): Job = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.getWorkStatus(notification.id).collectLatest { workInfos ->
-                val isScheduled = workInfos.any { it.state == WorkInfo.State.ENQUEUED }
+            viewModel.getNotificationById(notification.id).collectLatest { n ->
+                val isScheduled = n?.isScheduled ?: false
 
                 btnSchedule.isEnabled = !isScheduled
             }
@@ -89,6 +91,13 @@ class NotificationDetailsActivity : BaseActivity() {
     }
 
     private fun checkAndRequestPermissionAndSchedule(n: Notification) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!viewModel.canScheduleExactAlarms()) {
+                showExactAlarmPermissionDialog()
+                return
+            }
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             when {
                 ContextCompat.checkSelfPermission(
@@ -105,6 +114,24 @@ class NotificationDetailsActivity : BaseActivity() {
         } else {
             showScheduleConfirmationDialog(n)
         }
+    }
+
+    private fun showExactAlarmPermissionDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.exact_alarm_permission_needed))
+            .setMessage(getString(R.string.schedule_exact_time_body))
+            .setPositiveButton(getString(R.string.go_to_settings)) { _, _ ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
+                        data = Uri.fromParts("package", packageName, null)
+                    }
+                    startActivity(intent)
+                }
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun showScheduleConfirmationDialog(n: Notification) {
@@ -136,7 +163,7 @@ class NotificationDetailsActivity : BaseActivity() {
             R.id.action_cancel -> {
                 notification?.let {
                     viewModel.cancelNotification(it.id)
-                    displayMessage("Notification cancelled")
+                    displayMessage(getString(R.string.notification_cancelled))
                 }
                 true
             }

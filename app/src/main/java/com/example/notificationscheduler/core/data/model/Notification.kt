@@ -16,4 +16,6 @@ data class Notification(
     val title: String = "",
     @PropertyElement(name = "timeInSeconds")
     val timeInSeconds: Long = 0,
+    @PropertyElement(name = "isScheduled")
+    val isScheduled: Boolean = false
 ) : Serializable

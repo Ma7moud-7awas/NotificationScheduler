@@ -8,11 +8,6 @@ class NotificationRemoteDataSource @Inject constructor(
 ) {
 
     suspend fun fetchNotifications(): List<Notification> {
-        return try {
-            notificationService.fetchNotifications().notifications
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emptyList()
-        }
+        return notificationService.fetchNotifications().notifications
     }
 }
