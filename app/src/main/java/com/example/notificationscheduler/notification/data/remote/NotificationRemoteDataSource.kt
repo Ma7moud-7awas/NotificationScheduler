@@ -1,6 +1,6 @@
-package com.example.notificationscheduler.list.data.remote
+package com.example.notificationscheduler.notification.data.remote
 
-import com.example.notificationscheduler.core.data.model.Notification
+import com.example.notificationscheduler.notification.domain.model.Notification
 import javax.inject.Inject
 
 class NotificationRemoteDataSource @Inject constructor(

@@ -3,7 +3,7 @@ package com.example.notificationscheduler.core.di
 import android.content.Context
 import androidx.room.Room
 import com.example.notificationscheduler.core.data.db.AppDatabase
-import com.example.notificationscheduler.list.data.local.NotificationDao
+import com.example.notificationscheduler.notification.data.local.NotificationDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.example.notificationscheduler.details.alarm
+package com.example.notificationscheduler.notification.alarm
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,8 +9,8 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.notificationscheduler.R
-import com.example.notificationscheduler.list.presentation.NotificationListActivity
-import com.example.notificationscheduler.list.domain.NotificationRepository
+import com.example.notificationscheduler.notification.presentation.list.NotificationListActivity
+import com.example.notificationscheduler.notification.domain.repository.NotificationRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

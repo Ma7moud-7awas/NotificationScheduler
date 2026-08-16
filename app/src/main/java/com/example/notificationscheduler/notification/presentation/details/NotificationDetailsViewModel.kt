@@ -1,10 +1,10 @@
-package com.example.notificationscheduler.details.presentaion
+package com.example.notificationscheduler.notification.presentation.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.notificationscheduler.core.data.model.Notification
-import com.example.notificationscheduler.details.alarm.NotificationAlarmScheduler
-import com.example.notificationscheduler.list.domain.NotificationRepository
+import com.example.notificationscheduler.notification.domain.model.Notification
+import com.example.notificationscheduler.notification.alarm.NotificationAlarmScheduler
+import com.example.notificationscheduler.notification.domain.repository.NotificationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

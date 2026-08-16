@@ -1,4 +1,4 @@
-package com.example.notificationscheduler.details.presentaion
+package com.example.notificationscheduler.notification.presentation.details
 
 import android.Manifest
 import android.content.Intent
@@ -19,7 +19,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.notificationscheduler.R
-import com.example.notificationscheduler.core.data.model.Notification
+import com.example.notificationscheduler.notification.domain.model.Notification
 import com.example.notificationscheduler.core.presentation.BaseActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint

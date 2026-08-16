@@ -1,9 +1,10 @@
 package com.example.notificationscheduler.details.presentaion
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.notificationscheduler.core.data.model.Notification
-import com.example.notificationscheduler.details.alarm.NotificationAlarmScheduler
-import com.example.notificationscheduler.list.domain.NotificationRepository
+import com.example.notificationscheduler.notification.domain.model.Notification
+import com.example.notificationscheduler.notification.alarm.NotificationAlarmScheduler
+import com.example.notificationscheduler.notification.domain.repository.NotificationRepository
+import com.example.notificationscheduler.notification.presentation.details.NotificationDetailsViewModel
 import com.example.notificationscheduler.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify

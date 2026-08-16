@@ -1,4 +1,4 @@
-package com.example.notificationscheduler.list.presentation
+package com.example.notificationscheduler.notification.presentation.list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notificationscheduler.R
-import com.example.notificationscheduler.core.data.model.Notification
+import com.example.notificationscheduler.notification.domain.model.Notification
 
 class NotificationAdapter(
     private var notifications: List<Notification>,

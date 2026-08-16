@@ -1,7 +1,7 @@
-package com.example.notificationscheduler.list.data.local
+package com.example.notificationscheduler.notification.data.local
 
 import androidx.room.*
-import com.example.notificationscheduler.core.data.model.Notification
+import com.example.notificationscheduler.notification.domain.model.Notification
 import kotlinx.coroutines.flow.Flow
 
 @Dao

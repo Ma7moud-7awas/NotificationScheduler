@@ -1,9 +1,9 @@
-package com.example.notificationscheduler.list.data.repository
+package com.example.notificationscheduler.notification.data.repository
 
-import com.example.notificationscheduler.core.data.model.Notification
-import com.example.notificationscheduler.list.data.local.NotificationDao
-import com.example.notificationscheduler.list.data.remote.NotificationRemoteDataSource
-import com.example.notificationscheduler.list.domain.NotificationRepository
+import com.example.notificationscheduler.notification.domain.model.Notification
+import com.example.notificationscheduler.notification.data.local.NotificationDao
+import com.example.notificationscheduler.notification.data.remote.NotificationRemoteDataSource
+import com.example.notificationscheduler.notification.domain.repository.NotificationRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton

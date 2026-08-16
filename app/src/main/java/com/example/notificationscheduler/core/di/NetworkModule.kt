@@ -1,6 +1,6 @@
 package com.example.notificationscheduler.core.di
 
-import com.example.notificationscheduler.list.data.remote.NotificationService
+import com.example.notificationscheduler.notification.data.remote.NotificationService
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import dagger.Module

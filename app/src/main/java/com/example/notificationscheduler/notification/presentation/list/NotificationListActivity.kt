@@ -1,4 +1,4 @@
-package com.example.notificationscheduler.list.presentation
+package com.example.notificationscheduler.notification.presentation.list
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.notificationscheduler.R
 import com.example.notificationscheduler.core.presentation.BaseActivity
 import com.example.notificationscheduler.core.presentation.model.UiState
-import com.example.notificationscheduler.details.presentaion.NotificationDetailsActivity
+import com.example.notificationscheduler.notification.presentation.details.NotificationDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

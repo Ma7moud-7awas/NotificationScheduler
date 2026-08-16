@@ -1,6 +1,6 @@
-package com.example.notificationscheduler.list.domain
+package com.example.notificationscheduler.notification.domain.repository
 
-import com.example.notificationscheduler.core.data.model.Notification
+import com.example.notificationscheduler.notification.domain.model.Notification
 import kotlinx.coroutines.flow.Flow
 
 interface NotificationRepository {

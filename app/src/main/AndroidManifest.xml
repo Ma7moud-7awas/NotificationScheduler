@@ -17,12 +17,12 @@
         android:theme="@style/Theme.NotificationScheduler">
 
         <receiver
-            android:name=".details.alarm.NotificationAlarmReceiver"
+            android:name=".notification.alarm.NotificationAlarmReceiver"
             android:enabled="true"
             android:exported="false" />
 
         <activity
-            android:name=".list.presentation.NotificationListActivity"
+            android:name=".notification.presentation.list.NotificationListActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize">
@@ -34,7 +34,7 @@
         </activity>
 
         <activity
-            android:name=".details.presentaion.NotificationDetailsActivity"
+            android:name=".notification.presentation.details.NotificationDetailsActivity"
             android:exported="false"
             android:label="Notification Details" />
     </application>

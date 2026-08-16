@@ -1,7 +1,7 @@
 package com.example.notificationscheduler.core.di
 
-import com.example.notificationscheduler.list.data.repository.NotificationRepositoryImpl
-import com.example.notificationscheduler.list.domain.NotificationRepository
+import com.example.notificationscheduler.notification.data.repository.NotificationRepositoryImpl
+import com.example.notificationscheduler.notification.domain.repository.NotificationRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
