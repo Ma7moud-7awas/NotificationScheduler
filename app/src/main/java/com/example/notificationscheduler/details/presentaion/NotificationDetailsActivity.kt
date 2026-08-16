@@ -36,8 +36,7 @@ class NotificationDetailsActivity : BaseActivity() {
     ) { isGranted: Boolean ->
         if (isGranted) {
             notification?.let {
-                viewModel.scheduleNotification(it)
-                displaySchedulingSuccessDialog(it.timeInSeconds)
+                showScheduleConfirmationDialog(it)
             }
         } else {
             displayMessage("Notification permission denied")
@@ -96,8 +95,7 @@ class NotificationDetailsActivity : BaseActivity() {
                     this,
                     Manifest.permission.POST_NOTIFICATIONS
                 ) == PackageManager.PERMISSION_GRANTED -> {
-                    viewModel.scheduleNotification(n)
-                    displaySchedulingSuccessDialog(n.timeInSeconds)
+                    showScheduleConfirmationDialog(n)
                 }
 
                 else -> {
@@ -105,16 +103,19 @@ class NotificationDetailsActivity : BaseActivity() {
                 }
             }
         } else {
-            viewModel.scheduleNotification(n)
-            displaySchedulingSuccessDialog(n.timeInSeconds)
+            showScheduleConfirmationDialog(n)
         }
     }
 
-    private fun displaySchedulingSuccessDialog(seconds: Long) {
+    private fun showScheduleConfirmationDialog(n: Notification) {
         MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.scheduling_success_title))
-            .setMessage(getString(R.string.scheduling_success_message, seconds))
-            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+            .setTitle(getString(R.string.confirm_scheduling_title))
+            .setMessage(getString(R.string.confirm_scheduling_message, n.timeInSeconds))
+            .setPositiveButton(getString(R.string.confirm)) { _, _ ->
+                viewModel.scheduleNotification(n)
+                displayMessage(getString(R.string.notification_scheduled))
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
             .show()

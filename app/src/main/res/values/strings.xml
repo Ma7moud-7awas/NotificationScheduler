@@ -5,4 +5,9 @@
     <string name="scheduling_success_title">Success</string>
     <string name="scheduling_success_message">Notification scheduled for %1$d seconds</string>
     <string name="ok">OK</string>
+    <string name="confirm_scheduling_title">Confirm Scheduling</string>
+    <string name="confirm_scheduling_message">Are you sure you want to schedule this notification for %1$d seconds?</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="notification_scheduled">Notification scheduled</string>
 </resources>
