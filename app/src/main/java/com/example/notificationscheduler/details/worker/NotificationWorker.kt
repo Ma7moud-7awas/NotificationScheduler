@@ -28,30 +28,9 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) :
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val channelId = "scheduled_notifications"
+        val channelId = setNotificationChannel(notificationManager)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                "Scheduled Notifications",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        val intent =
-            applicationContext.packageManager.getLaunchIntentForPackage(applicationContext.packageName)
-                ?: Intent(applicationContext, NotificationListActivity::class.java)
-                    .apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    }
-
-        val pendingIntent = PendingIntent.getActivity(
-            applicationContext,
-            0,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        val pendingIntent = setNotificationIntent()
 
         val notification = NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(R.mipmap.ic_launcher)
@@ -63,5 +42,37 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) :
             .build()
 
         notificationManager.notify(id, notification)
+    }
+
+    private fun setNotificationChannel(notificationManager: NotificationManager): String {
+        val channelId = "scheduled_notifications"
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Scheduled Notifications",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        return channelId
+    }
+
+    private fun setNotificationIntent(): PendingIntent? {
+        val intent = applicationContext.packageManager
+            .getLaunchIntentForPackage(applicationContext.packageName)
+            ?: Intent(applicationContext, NotificationListActivity::class.java)
+
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+        val pendingIntent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        return pendingIntent
     }
 }
