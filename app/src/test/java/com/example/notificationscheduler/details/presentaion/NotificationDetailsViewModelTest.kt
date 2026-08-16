@@ -1,83 +1,84 @@
 package com.example.notificationscheduler.details.presentaion
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.example.notificationscheduler.core.data.model.Notification
+import com.example.notificationscheduler.details.alarm.NotificationAlarmScheduler
+import com.example.notificationscheduler.list.domain.NotificationRepository
+import com.example.notificationscheduler.rules.MainDispatcherRule
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class NotificationDetailsViewModelTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val workManager: WorkManager = mockk()
+    private val repository: NotificationRepository = mockk()
+    private val alarmScheduler: NotificationAlarmScheduler = mockk()
     private lateinit var viewModel: NotificationDetailsViewModel
 
     @Before
     fun setup() {
-        viewModel = NotificationDetailsViewModel(workManager)
+        viewModel = NotificationDetailsViewModel(repository, alarmScheduler)
     }
 
     @Test
-    fun `scheduleNotification enqueues unique work with correct parameters`() {
+    fun `scheduleNotification updates database and schedules alarm`() = runTest {
         // Given
         val notification = Notification(id = 1, title = "Test Notification", timeInSeconds = 60)
-        val tag = "notification_${notification.id}"
-        every {
-            workManager.enqueueUniqueWork(tag, ExistingWorkPolicy.REPLACE, any<OneTimeWorkRequest>())
-        } returns mockk()
+        coEvery { repository.updateScheduledState(notification.id, true) } returns Unit
+        every { alarmScheduler.schedule(any()) } returns Unit
 
         // When
         viewModel.scheduleNotification(notification)
 
         // Then
-        verify {
-            workManager.enqueueUniqueWork(
-                tag,
-                ExistingWorkPolicy.REPLACE,
-                match<OneTimeWorkRequest> {
-                    it.tags.contains(tag) && it.tags.contains(NotificationDetailsViewModel.NOTIFICATION_WORK_TAG)
-                }
-            )
-        }
+        coVerify { repository.updateScheduledState(notification.id, true) }
+        verify { alarmScheduler.schedule(match { it.id == notification.id && it.isScheduled }) }
     }
 
     @Test
-    fun `cancelNotification calls workManager cancelUniqueWork`() {
+    fun `cancelNotification updates database and cancels alarm`() = runTest {
         // Given
         val notificationId = 1
-        val tag = "notification_$notificationId"
-        every { workManager.cancelUniqueWork(tag) } returns mockk()
+        coEvery { repository.updateScheduledState(notificationId, false) } returns Unit
+        every { alarmScheduler.cancel(notificationId) } returns true
 
         // When
         viewModel.cancelNotification(notificationId)
 
         // Then
-        verify { workManager.cancelUniqueWork(tag) }
+        coVerify { repository.updateScheduledState(notificationId, false) }
+        verify { alarmScheduler.cancel(notificationId) }
     }
 
     @Test
-    fun `getWorkStatus returns the flow from workManager`() {
+    fun `getNotificationById returns the flow from repository`() {
         // Given
         val notificationId = 1
-        val tag = "notification_$notificationId"
-        val flow = flowOf(emptyList<androidx.work.WorkInfo>())
-        every { workManager.getWorkInfosForUniqueWorkFlow(tag) } returns flow
+        val notification = Notification(id = notificationId, title = "Test")
+        val flow = flowOf(notification)
+        every { repository.getNotificationById(notificationId) } returns flow
 
         // When
-        val result = viewModel.getWorkStatus(notificationId)
+        val result = viewModel.getNotificationById(notificationId)
 
         // Then
         assertEquals(flow, result)
-        verify { workManager.getWorkInfosForUniqueWorkFlow(tag) }
+        verify { repository.getNotificationById(notificationId) }
     }
 }

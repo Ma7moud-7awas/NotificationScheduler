@@ -22,7 +22,9 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "notification_scheduler_db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration(true)
+            .build()
     }
 
     @Provides

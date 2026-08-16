@@ -10,4 +10,10 @@
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="notification_scheduled">Notification scheduled</string>
+    <string name="exact_alarm_permission_needed">Exact Alarm Permission Needed</string>
+    <string name="schedule_exact_time_body">To schedule notifications at an exact time, please allow the app to set exact alarms in settings.</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="notification_cancelled">Notification cancelled</string>
+    <string name="notification_permission_denied">Notification permission denied</string>
+    <string name="all_notifications_cancelled">All notifications cancelled</string>
 </resources>

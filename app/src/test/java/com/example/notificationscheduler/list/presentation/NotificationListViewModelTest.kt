@@ -1,11 +1,10 @@
 package com.example.notificationscheduler.list.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.work.WorkManager
 import app.cash.turbine.test
 import com.example.notificationscheduler.core.data.model.Notification
 import com.example.notificationscheduler.core.presentation.model.UiState
-import com.example.notificationscheduler.details.presentaion.NotificationDetailsViewModel
+import com.example.notificationscheduler.details.alarm.NotificationAlarmScheduler
 import com.example.notificationscheduler.list.domain.NotificationRepository
 import com.example.notificationscheduler.rules.MainDispatcherRule
 import io.mockk.coEvery
@@ -23,7 +22,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class NotificationViewModelTest {
+class NotificationListViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -32,8 +31,8 @@ class NotificationViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val notificationRepo: NotificationRepository = mockk()
-    private val workManager: WorkManager = mockk()
-    private lateinit var viewModel: NotificationViewModel
+    private val alarmScheduler: NotificationAlarmScheduler = mockk()
+    private lateinit var viewModel: NotificationListViewModel
 
     @Test
     fun `init observes notifications and fetches them`() = runTest {
@@ -43,7 +42,7 @@ class NotificationViewModelTest {
         coEvery { notificationRepo.refreshNotifications() } returns Unit
 
         // When
-        viewModel = NotificationViewModel(notificationRepo, workManager)
+        viewModel = NotificationListViewModel(notificationRepo, alarmScheduler)
 
         // Then
         viewModel.uiState.test {
@@ -62,10 +61,10 @@ class NotificationViewModelTest {
         coEvery { notificationRepo.getNotifications() } returns flowOf(notifications)
         coEvery { notificationRepo.refreshNotifications() } returns Unit
         
-        viewModel = NotificationViewModel(notificationRepo, workManager)
+        viewModel = NotificationListViewModel(notificationRepo, alarmScheduler)
 
         // When
-        viewModel.fetchNotifications()
+        viewModel.refreshNotifications()
 
         // Then
         assertTrue(viewModel.uiState.value is UiState.Success)
@@ -81,29 +80,42 @@ class NotificationViewModelTest {
         coEvery { notificationRepo.refreshNotifications() } throws Exception(errorMessage)
 
         // When
-        viewModel = NotificationViewModel(notificationRepo, workManager)
+        viewModel = NotificationListViewModel(notificationRepo, alarmScheduler)
 
         // Then
         viewModel.uiState.test {
-            val state = awaitItem()
-            assertTrue(state is UiState.Error)
-            assertEquals(errorMessage, (state as UiState.Error).message)
+            // Account for any intermediate states (Success(empty), Loading) and find the Error state
+            var foundError = false
+            while (true) {
+                val item = awaitItem()
+                if (item is UiState.Error) {
+                    assertEquals(errorMessage, item.message)
+                    foundError = true
+                    break
+                }
+            }
+            assertTrue("Expected Error state but reached end of flow", foundError)
         }
     }
 
     @Test
-    fun `cancelAllNotifications calls workManager cancelAllWorkByTag`() = runTest {
+    fun `cancelAllNotifications calls scheduler and repository`() = runTest {
         // Given
+        val scheduled = listOf(Notification(id = 1, isScheduled = true))
         coEvery { notificationRepo.getNotifications() } returns flowOf(emptyList())
         coEvery { notificationRepo.refreshNotifications() } returns Unit
-        every { workManager.cancelAllWorkByTag(any()) } returns mockk()
+        coEvery { notificationRepo.getAllScheduledNotifications() } returns scheduled
+        every { alarmScheduler.cancel(any()) } returns true
+        coEvery { notificationRepo.updateScheduledState(any(), any()) } returns Unit
         
-        viewModel = NotificationViewModel(notificationRepo, workManager)
+        viewModel = NotificationListViewModel(notificationRepo, alarmScheduler)
 
         // When
         viewModel.cancelAllNotifications()
 
         // Then
-        verify { workManager.cancelAllWorkByTag(NotificationDetailsViewModel.NOTIFICATION_WORK_TAG) }
+        coVerify { notificationRepo.getAllScheduledNotifications() }
+        verify { alarmScheduler.cancel(1) }
+        coVerify { notificationRepo.updateScheduledState(1, false) }
     }
 }
