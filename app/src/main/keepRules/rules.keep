@@ -4,9 +4,21 @@
 # For more details, see
 #   https://d.android.com/r/tools/r8/keep-rules
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# TikXML Rules
+# Keep the library classes
+-keep class com.tickaroo.tikxml.** { *; }
+
+# Keep generated TypeAdapters
+-keep class **$$TypeAdapter { *; }
+
+# Keep attributes required for generic type reflection (Fixes "Object" error)
+-keepattributes Signature, InnerClasses, EnclosingMethod, *Annotation*
+
+# Keep model classes annotated with TikXML annotations
+-keep @com.tickaroo.tikxml.annotation.Xml class * { *; }
+
+# Keep annotated fields/methods to prevent them from being renamed or removed
+-keepclasseswithmembers class * {
+    @com.tickaroo.tikxml.annotation.* <fields>;
+    @com.tickaroo.tikxml.annotation.* <methods>;
+}
