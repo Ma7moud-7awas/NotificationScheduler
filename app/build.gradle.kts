@@ -56,7 +56,12 @@ dependencies {
     kapt(libs.tikxml.processor)
     implementation(libs.retrofit.tikxml)
 
+    // test
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.arch.core.testing)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 }
